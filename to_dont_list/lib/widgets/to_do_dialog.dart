@@ -42,6 +42,7 @@ class _ToDoDialogState extends State<ToDoDialog> {
             },
             controller: _inputController,
             decoration: const InputDecoration(hintText: "type something here"),
+            key: const Key("LabelField"),
           ),
           TextField(
             keyboardType: TextInputType.number,
@@ -55,7 +56,8 @@ class _ToDoDialogState extends State<ToDoDialog> {
             },
             decoration: const InputDecoration(
               labelText: "Seconds",
-            )
+            ),
+            key: const Key("TimeField"),
           )
         ],
       ), 
