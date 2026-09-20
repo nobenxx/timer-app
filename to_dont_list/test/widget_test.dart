@@ -17,11 +17,11 @@ void main() {
   testWidgets('ToDoListItem has a text', (tester) async {
     await tester.pumpWidget(MaterialApp(
         home: Scaffold(
-            body: ToDoListItem(
-                item:  Item(name: "test"),
+            body: TimerListEntry(
+                item:  MyTimer(name: "test"),
                 completed: true,
-                onListChanged: (Item item, bool completed) {},
-                onDeleteItem: (Item item) {}))));
+                onListChanged: (MyTimer item, bool completed) {},
+                onDeleteItem: (MyTimer item) {}))));
     final textFinder = find.text('test');
 
     // Use the `findsOneWidget` matcher provided by flutter_test to verify
@@ -33,11 +33,11 @@ void main() {
       (tester) async {
     await tester.pumpWidget(MaterialApp(
         home: Scaffold(
-            body: ToDoListItem(
-                item: Item(name: "test"),
+            body: TimerListEntry(
+                item: MyTimer(name: "test"),
                 completed: true,
-                onListChanged: (Item item, bool completed) {},
-                onDeleteItem: (Item item) {}))));
+                onListChanged: (MyTimer item, bool completed) {},
+                onDeleteItem: (MyTimer item) {}))));
     final abbvFinder = find.text('10.0');
     final avatarFinder = find.byType(Container);
 
@@ -76,7 +76,7 @@ void main() {
     await tester.pump();
     expect(find.text("hi"), findsOneWidget);
 
-    final listItemFinder = find.byType(ToDoListItem);
+    final listItemFinder = find.byType(TimerListEntry);
 
     expect(listItemFinder, findsNWidgets(1));
   });

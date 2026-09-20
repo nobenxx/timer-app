@@ -3,18 +3,18 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:to_dont_list/objects/item.dart';
 
-typedef ToDoListChangedCallback = Function(Item item, bool completed);
-typedef ToDoListRemovedCallback = Function(Item item);
+typedef ToDoListChangedCallback = Function(MyTimer item, bool completed);
+typedef ToDoListRemovedCallback = Function(MyTimer item);
 
-class ToDoListItem extends StatefulWidget {
-  ToDoListItem(
+class TimerListEntry extends StatefulWidget {
+  TimerListEntry(
       {required this.item,
       required this.completed,
       required this.onListChanged,
       required this.onDeleteItem})
       : super(key: ObjectKey(item));
 
-  final Item item;
+  final MyTimer item;
   final bool completed;
 
   final ToDoListChangedCallback onListChanged;
@@ -24,10 +24,10 @@ class ToDoListItem extends StatefulWidget {
 
 
   @override
-  State<ToDoListItem> createState(){
+  State<TimerListEntry> createState(){
      return _CountDownState();
   } 
-
+ // CHANGE COLOR
   Color _getColor(BuildContext context) {
     // The theme depends on the BuildContext because different
     // parts of the tree can have different themes.
@@ -49,7 +49,7 @@ class ToDoListItem extends StatefulWidget {
   }
 
 }
-class _CountDownState extends State<ToDoListItem> {
+class _CountDownState extends State<TimerListEntry> {
     //https://api.flutter.dev/flutter/dart-async/Timer-class.html
     @override
     void dispose() {
@@ -73,8 +73,8 @@ class _CountDownState extends State<ToDoListItem> {
           color: widget._getColor(context),
         ),
         child: Text(
-          widget.item.timeRemaining.toStringAsFixed(1),
-          style: widget._getTextStyle(context),
+          widget.item.timeRemaining.toStringAsFixed(widget.item.timeRemaining < 10 ? 1 : 0),
+          style: widget._getTextStyle(context)?.copyWith(color: Colors.white),
           textAlign: TextAlign.center,
           maxLines: 2,
           textScaler: const TextScaler.linear(1.5),
@@ -83,6 +83,7 @@ class _CountDownState extends State<ToDoListItem> {
       ),
       title: Text(
         widget.item.name,
+        style: widget._getTextStyle(context),
       ),
     );
     

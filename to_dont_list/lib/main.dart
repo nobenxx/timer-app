@@ -14,8 +14,8 @@ class ToDoList extends StatefulWidget {
 }
 
 class _ToDoListState extends State<ToDoList> {
-  final List<Item> items = [];
-  final _itemSet = <Item>{};
+  final List<MyTimer> items = [];
+  final _itemSet = <MyTimer>{};
   Timer? _timer;
   Timer? get timer => _timer;
 
@@ -23,7 +23,7 @@ class _ToDoListState extends State<ToDoList> {
     startTimer();
   }
 
-  void _handleListChanged(Item item, bool completed) {
+  void _handleListChanged(MyTimer item, bool completed) {
     setState(() {
       // When a user changes what's in the list, you need
       // to change _itemSet inside a setState call to
@@ -44,7 +44,7 @@ class _ToDoListState extends State<ToDoList> {
     });
   }
 
-  void _handleDeleteItem(Item item) {
+  void _handleDeleteItem(MyTimer item) {
     setState(() {
       print("Deleting item");
       items.remove(item);
@@ -54,7 +54,7 @@ class _ToDoListState extends State<ToDoList> {
   void _handleNewItem(String itemText, TextEditingController textController, double? time) {
     setState(() {
       print("Adding new item");
-      Item item = Item(name: itemText);
+      MyTimer item = MyTimer(name: itemText);
       item.timeRemaining = time ?? 10.0;
       items.insert(0, item);
       textController.clear();
@@ -65,7 +65,7 @@ class _ToDoListState extends State<ToDoList> {
       _timer?.cancel();
       _timer = Timer.periodic(const Duration(milliseconds:100), (timer) {
         setState(() {
-          for (Item item in items){
+          for (MyTimer item in items){
             if(!_itemSet.contains(item) && item.timeRemaining > 0.1){
               item.timeRemaining -= 0.1;
             }
@@ -82,12 +82,12 @@ class _ToDoListState extends State<ToDoList> {
     return Scaffold(
         appBar: AppBar(
           title: const Text('Timers'),
-          backgroundColor: Colors.green,
+          backgroundColor: Theme.of(context).primaryColor,
         ),
         body: ListView(
           padding: const EdgeInsets.symmetric(vertical: 8.0),
           children: items.map((item) {
-            return ToDoListItem(
+            return TimerListEntry(
               item: item,
               completed: _itemSet.contains(item),
               onListChanged: _handleListChanged,
@@ -113,8 +113,11 @@ class _ToDoListState extends State<ToDoList> {
 
 
 void main() {
-  runApp(const MaterialApp(
+  runApp(MaterialApp(
     title: 'Timers',
     home: ToDoList(),
-  ));
+    theme: ThemeData(
+      primaryColor:Colors.lightGreenAccent)
+    )
+  );
 }
