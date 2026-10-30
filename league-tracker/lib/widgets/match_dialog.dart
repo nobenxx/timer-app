@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:to_dont_list/objects/match_record.dart';
+import 'package:to_dont_list/objects/mode.dart';
 
 typedef MatchListAddedCallback = Function(MatchRecord record);
 
@@ -107,6 +108,7 @@ Widget build(BuildContext context) {
       setState(() {
         widget.onMatchAdded(
           MatchRecord(
+          game: ModeManager.mode.game,
           champion: _championController.text,
           role: _selectedRole,
           kills: int.parse(_killsController.text),

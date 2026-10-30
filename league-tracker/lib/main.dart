@@ -1,6 +1,7 @@
 // Started with https://docs.flutter.dev/development/ui/widgets-intro
 import 'package:flutter/material.dart';
 import 'package:to_dont_list/objects/match_record.dart';
+import 'package:to_dont_list/objects/mode.dart';
 import 'package:to_dont_list/widgets/match_list_item.dart';
 import 'package:to_dont_list/widgets/match_dialog.dart';
 
@@ -62,13 +63,19 @@ List<MatchRecord> get _sortedMatches {
   final sorted = List<MatchRecord>.from(matches);
   switch (_sortMode) {
     case SortMode.role:
-      sorted.sort((a, b) => a.role.index.compareTo(b.role.index));
+      if (ModeManager.mode.game == Game.league) {
+        sorted.sort((a, b) => a.role!.index.compareTo(b.role!.index));
+      }
       break;
     case SortMode.champion:
-      sorted.sort((a, b) => a.champion.compareTo(b.champion));
+      if (ModeManager.mode.game == Game.league || ModeManager.mode.game == Game.deadlock) {
+        sorted.sort((a, b) => a.champion!.compareTo(b.champion!));
+      }
       break;
     case SortMode.result:
-      sorted.sort((a, b) => (b.won ? 1 : 0).compareTo(a.won ? 1 : 0));
+      if (ModeManager.mode.game == Game.league) {
+        sorted.sort((a, b) => ((b.won ?? false) ? 1 : 0).compareTo((a.won ?? false) ? 1 : 0));
+      }
       break;
     case SortMode.none:
       break;
