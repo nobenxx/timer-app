@@ -1,6 +1,7 @@
 // Started with https://docs.flutter.dev/development/ui/widgets-intro
 import 'dart:async';
 
+import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
 import 'package:to_dont_list/objects/item.dart';
 import 'package:to_dont_list/widgets/to_do_items.dart';
@@ -18,6 +19,8 @@ class _ToDoListState extends State<ToDoList> {
   final _itemSet = <MyTimer>{};
   Timer? _timer;
   Timer? get timer => _timer;
+  // Plays a sound when a timer finishes (issue #2)
+  final AudioPlayer _player = AudioPlayer();
 
   _ToDoListState(){
     startTimer();
@@ -70,9 +73,12 @@ class _ToDoListState extends State<ToDoList> {
               item.timeRemaining -= 0.1;
             }
             else if(!_itemSet.contains(item) && item.timeRemaining <= 0.1){
+              _player.play(AssetSource('sounds/chime.mp3'));
               _handleListChanged(item, false);
             }
           }
+          // Sort timers so the one with the least time left is on top (issue #1)
+          items.sort((a, b) => a.timeRemaining.compareTo(b.timeRemaining));
         });
       });
     }
